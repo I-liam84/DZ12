@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[ ]:
 
 
 from tkinter import *
@@ -46,9 +46,10 @@ def bubble_sort(my_list):
                     text1=my_list
 
     return my_list
+
 @get_duration
 def qsort(nums):
-    '''быстрая сортировка'''
+    '''Быстрая сортировка'''
 
     if len(nums)<2:
         return output.insert(1.0,(nums,'Тут нечего сортировать'))
@@ -79,8 +80,40 @@ def radix_sort(A):
             A = []
             for k in range(rang):
                 A = A + B[k]
-
     return A
+
+@get_duration
+def mergesort(lst):
+    '''Сортировка слиянием'''
+    
+    if len(lst)>1:
+        mid = len(lst) // 2 # делим список пополам
+        left = lst[:mid]
+        right = lst[mid:]
+        mergesort(left) # применяем функцию к левой и правой частям
+        mergesort(right)
+        a=0
+        b=0
+        c=0
+        while a < len(left) and b < len (right):
+            if left [a] < right [b]:
+                lst[c] =left [a]
+                a = a + 1
+            else:
+                lst [c] = right [b]
+                b = b + 1
+            c = c + 1
+        while a < len(left):
+            lst[c] = left[a]
+            a = a + 1
+            c = c + 1
+        while b < len(right):
+            lst[c] = right[b]
+            b = b + 1
+            c = c + 1
+   
+    return lst
+
 def button_start():
     '''Функция, которую выполняет кнопка Поехали! - применяет сортировки'''
     second=[]
@@ -103,6 +136,7 @@ def button_start():
     print(second)
     method=combobox.get()
     print(method)
+    
     if method == sort1:
         my_list=bubble_sort(second)
         return output.insert(1.0,("\nРезультат сортировки пузырьком и время выполнения:",my_list ))
@@ -112,6 +146,9 @@ def button_start():
     elif method ==sort3:
         A=radix_sort(second)
         return output.insert(1.0,('\nРезультат поразрядной сортировки и время выполнения:',A ))
+    elif method ==sort4:
+        lst=mergesort(second)
+        return output.insert(1.0,('\nРезультат сортировкой слияния и время выполнения:',lst ))
     else:
         return output.insert(1.0, text='Что-то не так, попробуйте ещё раз')
     #return output.insert(1.0, text='Сортировка выполнена!\nОчистийте поле перед следующим вводом')
@@ -135,7 +172,8 @@ frame_bot.pack(fill=BOTH,expand=True,pady=5)
 sort1='Сортировка пузырьком'
 sort2='Быстрая сортировка'
 sort3='Поразрядная сортировка'
-sort_types=[sort1,sort2,sort3]
+sort4='Сортировка слиянием'
+sort_types=[sort1,sort2,sort3,sort4]
 #по-умолчанию будет выбран первый элемент из sort_types
 sort_var = StringVar(value=sort_types[0])
 
@@ -174,9 +212,11 @@ output.pack(side=BOTTOM)
 assert sort1=='Сортировка пузырьком'
 assert sort2=='Быстрая сортировка'
 assert sort3=='Поразрядная сортировка'
+assert sort4=='Сортировка слиянием'
 assert (bubble_sort([54,2,67,9])[0])==[2,9,54,67]
 assert (qsort([54,2,67,9])[0])==[2,9,54,67]
 assert (radix_sort([54,2,67,9])[0])==[2,9,54,67]
+assert (mergesort([54,2,67,9])[0])==[2,9,54,67]
 window.mainloop()
 
 
